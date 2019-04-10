@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     // Get the name of the files from the command line.
     if (argc != 3)
     {
-        printf("You must supply two filenames\n");
+        printf("You must supply two filenames.\n");
         exit(1);
     }
     
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     {
         if (strcmp(argv[1], argv[2]) == 0)
         {
-            printf("You must supply two different filenames\n");
+            printf("You must supply two different filenames.\n");
             exit(1);
         }
     }
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     FILE *in = fopen(argv[1], "r");
     if (!in)
     {
-        printf("Can't open %s for reading\n", argv[1]);
+        printf("Can't open %s for reading.\n", argv[1]);
         exit(1);
     }
     
@@ -37,29 +37,28 @@ int main(int argc, char *argv[])
         out = fopen(argv[2], "w");
         if (!out)
         {
-            printf("Can't open %s for writing\n", argv[2]);
+            printf("Can't open %s for writing.\n", argv[2]);
             exit(1);
         }
     }
     
-    // Loop through first file, one line at a time
-    char line[15];
-    char hash[32];
+    char line[16];
     
-    while(fgets(line, 15, in) != NULL)
+    // Loop through first file, one line at a time
+    while(fgets(line, 16, in) != NULL)
     {
+        // Remove the new line char by replacing it with a null char
+        line[strlen(line) - 1] = '\0';
+        
         // Hash each line from the input file.
-        *hash = *md5(line, strlen(line));
+        char *hash = md5(line, strlen(line));
         
         // Write hash to the output file.
         fprintf(out, "%s\n", hash);
         
         // Free up memory from *md5's malloc.
-        //free(hash);
+        free(hash);
     }
-    
-    // Free up memory from *md5's malloc.
-    free(hash);
     
     // Close both files
     fclose(in);

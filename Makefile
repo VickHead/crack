@@ -26,3 +26,6 @@ check: hashpass
 
 clean:
 	rm -f *.o hashpass hashes.txt wordhashes.txt
+
+run: hashpass
+	./hashpass rockyou100.txt hashes.txt
